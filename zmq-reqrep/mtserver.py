@@ -1,8 +1,6 @@
 """
 
-   Multithreaded Reqrep server
-
-   Author: Guillaume Aubert (gaubert) <guillaume(dot)aubert(at)gmail(dot)com>
+   Usage: mtserver.py MESSAGE_SIZE
 
    Author: Junda Feng
 

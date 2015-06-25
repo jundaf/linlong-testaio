@@ -14,15 +14,15 @@ print("Connecting to hello world server...")
 socket = context.socket(zmq.REQ)
 socket.connect("tcp://localhost:5555")
 
-total_recieved = 0
-#  Do 26 requests, waiting each time for a response
-for request in string.ascii_lowercase:
-    #print("Sending request %s ..." % request)
+total_received = 0
+#  Do 10 requests, waiting each time for a response
+for request in string.ascii_lowercase[:10]:
+    print("Sending request %s ..." % request)
     socket.send_string(request)
 
     #  Get the reply.
-    message = socket.recv()
-    total_recieved += len(message)
-    #print("Received reply %s [ %s ]" % (request, message))
+    message = socket.recv_string()
+    total_received += len(message)
+    print("Received reply %s [ %s ]" % (request, len(message)))
 
-print("total recieved: {}".format(total_recieved))
+print("Total received {}".format(total_received))
