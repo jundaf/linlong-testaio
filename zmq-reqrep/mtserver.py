@@ -1,6 +1,6 @@
 """
 
-   Multithreaded Hello World server
+   Multithreaded Reqrep server
 
    Author: Guillaume Aubert (gaubert) <guillaume(dot)aubert(at)gmail(dot)com>
 
@@ -18,12 +18,14 @@ BUFFERS = {}
 
 
 def setup_buffers():
+    """Prepare responses"""
+
     import sys, string
     buffer_size = DEFAULT_SIZE
     if len(sys.argv) >= 2:
         buffer_size = int(sys.argv[1])
 
-    print("set buffer size to {}".format(buffer_size))
+    print("Set buffer size to {}".format(buffer_size))
 
     for letter in string.ascii_lowercase:
         BUFFERS[letter] = letter * buffer_size
@@ -31,6 +33,7 @@ def setup_buffers():
 
 def worker_routine(worker_url, context=None):
     """Worker routine"""
+
     context = context or zmq.Context.instance()
     # Socket to talk to dispatcher
     socket = context.socket(zmq.REP)
@@ -38,9 +41,9 @@ def worker_routine(worker_url, context=None):
 
     while True:
         try:
-            string_ = socket.recv_string()
+            request = socket.recv_string()
             #send reply back to client
-            socket.send_string(BUFFERS[string_])
+            socket.send_string(BUFFERS[request])
         except zmq.ContextTerminated:
             break
 
