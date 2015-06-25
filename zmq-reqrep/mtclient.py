@@ -8,9 +8,13 @@ import time
 import threading
 import queue
 import functools
+import multiprocessing as mp
+import os
 import zmq
 
-WORKER_NUM = 20
+
+PROCESS_NUM = 4
+WORKER_NUM = 10
 DATA_UNIT = 1024 * 1024
 
 
@@ -38,7 +42,7 @@ def worker_routine(que):
         message = socket.recv()
 
         total_recieved += len(message)
-        if total_recieved > DATA_UNIT * 100:
+        if total_recieved > DATA_UNIT * 10:
             break
 
     elapsed = time.time() - begin_time
@@ -47,7 +51,7 @@ def worker_routine(que):
     socket.close()
 
 
-def main():
+def mainf(task_id):
     q = queue.Queue()
     for i in range(WORKER_NUM):
         thread = threading.Thread(target=worker_routine, args=(q,))
@@ -56,8 +60,11 @@ def main():
     for i in range(WORKER_NUM):
         results.append(q.get())
     total = functools.reduce(lambda x, y: x + y, results)
-    print("average time: {}".format(total / WORKER_NUM))
+    average = total / WORKER_NUM
+    print("[{}] average time: {}".format(os.getpid(), average))
+    return average
 
 
 if __name__ == '__main__':
-    main()
+    with mp.Pool(PROCESS_NUM) as pool:
+        pool.map(mainf, range(PROCESS_NUM))
