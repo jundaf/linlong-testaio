@@ -3,11 +3,13 @@
 #   Binds PUB socket to tcp://*:5556
 #
 
+import sys
 import random
 import string
 import zmq
 
-message = random.choice(string.ascii_lowercase) * 1024
+multiple = int(sys.argv[1]) if len(sys.argv) > 1 else 1
+message = random.choice(string.ascii_lowercase) * 1024 * 1
 
 context = zmq.Context()
 socket = context.socket(zmq.PUB)
