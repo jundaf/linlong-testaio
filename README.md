@@ -4,11 +4,11 @@ rrserver and myclient.py is for testing REQ-REP pattern.
 
 pbserver and wuclient.py is for testing PUB-SUB pattern.
 
-## Usage: SERVER MESAGE_SIZE
+## Usage: SERVER MESSAGE_SIZE
 
 SERVER is rrserver or pbserser.
 
-MESAGE_SIZE is 1 for 1k, 8 for 8k and so on.
+MESSAGE_SIZE is 1 for 1k, 8 for 8k and so on.
 
 ## Usage: CLIENT SERVER_NAME DATA_SIZE PROCESSES THREADS
 
