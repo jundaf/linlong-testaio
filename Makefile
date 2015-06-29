@@ -1,15 +1,18 @@
 ZRR = zmq-reqrep
 ZPB = zmq-pubsub
 INC = zmq-helper
+LINK = ln -fs
 
-all: rrserver pbserver
+all: rrserver psserver
 
 rrserver:
 	$(CC) -g -o $(ZRR)/rrserver -I$(INC) $(ZRR)/mtserver.c -lzmq -lpthread
+	$(LINK) ../$(ZRR)/rrserver bin/rrserver
 
-pbserver:
-	$(CC) -g -o $(ZPB)/pbserver -I$(INC) $(ZPB)/wuserver.c -lzmq
+psserver:
+	$(CC) -g -o $(ZPB)/psserver -I$(INC) $(ZPB)/wuserver.c -lzmq
+	$(LINK) ../$(ZPB)/psserver bin/psserver
 
 clean:
 	$(RM) $(ZRR)/rrserver
-	$(RM) $(ZPB)/pbserver
+	$(RM) $(ZPB)/psserver
