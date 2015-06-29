@@ -15,6 +15,7 @@ import zmq
 PROCESS_NUM = 10
 WORKER_NUM = 10
 DATA_UNIT = 1024 * 1024
+DATA_SIZE = 100
 
 
 def worker_routine(que):
@@ -59,7 +60,7 @@ def start_workers(task_id):
 
 if __name__ == '__main__':
     server = 'localhost'
-    units = 10 # default to 10M
+    units = DATA_SIZE # default to 100M
     if len(sys.argv) >= 2:
         server = sys.argv[1]
     if len(sys.argv) >= 3:
