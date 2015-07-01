@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SERVER=172.16.0.158
-WUCLIENT=zmq-reqrep/wuclient.py
+WUCLIENT=zmq-pubsub/wuclient.py
 
 if [ -f "$WUCLIENT" ]; then
     CLIENT="$WUCLIENT"
