@@ -27,7 +27,13 @@ int main (int argc, char **argv)
 
     //  Prepare our context and publisher
     void *context = zmq_ctx_new ();
+    zmq_ctx_set(context, ZMQ_IO_THREADS, 5);
+
     void *publisher = zmq_socket (context, ZMQ_PUB);
+
+    int hwm = 100;
+    zmq_setsockopt(publisher, ZMQ_SNDHWM, &hwm, sizeof(int));
+
     int rc = zmq_bind (publisher, "tcp://*:5556");
     assert (rc == 0);
 
