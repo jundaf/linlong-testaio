@@ -1,4 +1,4 @@
 zmq-reqrep/rrserver
 zmq-pubsub/psserver
-bin/rrserver
-bin/psserver
+bin/*server
+bin/echo*
