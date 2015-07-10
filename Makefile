@@ -11,7 +11,7 @@ echo_server: $(ASIO)/echo_server.cpp
 	$(CXX) -g -o bin/echo_server $(ASIO)/echo_server.cpp -lboost_system
 
 echo_client: $(ASIO)/echo_client.cpp
-	$(CXX) -g -o bin/echo_client $(ASIO)/echo_client.cpp -lboost_system -lpthread
+	$(CXX) -g -o bin/echo_client $(ASIO)/echo_client.cpp -lboost_chrono -lboost_system -lpthread
 
 rrserver: $(ZRR)/mtserver.c
 	$(CC) -g -o bin/rrserver -I$(INC) $(ZRR)/mtserver.c -lzmq -lpthread

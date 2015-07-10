@@ -15,8 +15,10 @@
 #include <vector>
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
+#include <boost/chrono.hpp>
 
 using boost::asio::ip::tcp;
+using namespace boost::chrono;
 
 enum { data_required = 1024 * 1024 * 100 };
 
@@ -26,7 +28,7 @@ public:
     client_session(boost::asio::io_service& io_service,
             const char *host, const char *port)
         : socket_(io_service),
-          total_transferred(0),
+          total_transferred_(0),
           request_("hello")
     {
         tcp::resolver resolver(io_service);
@@ -39,21 +41,16 @@ public:
                         boost::asio::placeholders::iterator));
     }
 
-    size_t transferred()
-    {
-        return total_transferred;
-    }
-
 private:
     void handle_read(const boost::system::error_code& error,
                      size_t bytes_transferred)
     {
         if (!error)
         {
-            total_transferred += bytes_transferred;
-            if (total_transferred >= data_required)
+            total_transferred_ += bytes_transferred;
+            if (total_transferred_ >= data_required)
             {
-                // std::cout << total_transferred << std::endl;
+                // std::cout << total_transferred_ << std::endl;
                 return;
             }
             send_request();
@@ -97,7 +94,7 @@ private:
     tcp::socket socket_;
     enum { max_length = 1024 };
     char data_[max_length];
-    size_t total_transferred;
+    size_t total_transferred_;
     std::string request_;
 };
 
@@ -121,7 +118,11 @@ int main(int argc, char* argv[])
         for (int i=0; i < 100; ++i)
             vc.push_back(new client_session(io_service, argv[1], argv[2]));
 
+        system_clock::time_point start = system_clock::now();
+
         io_service.run();
+
+        std::cout << duration_cast<milliseconds>(system_clock::now() - start) << std::endl;
     }
     catch (std::exception& e)
     {
